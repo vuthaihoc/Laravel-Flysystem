@@ -48,6 +48,10 @@ class ConnectionFactory
         if (!isset($config['driver'])) {
             throw new InvalidArgumentException('A driver must be specified.');
         }
+        
+        if(class_exists( $config['driver'])){
+            return new $config['driver'];
+        }
 
         switch ($config['driver']) {
             case 'awss3':
