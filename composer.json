@@ -1,5 +1,5 @@
 {
-    "name": "graham-campbell/flysystem",
+    "name": "stupiddev/flysystem",
     "description": "Flysystem Is A Flysystem Bridge For Laravel 5",
     "keywords": ["laravel", "framework", "files", "aws", "s3", "dropbox", "flysystem", "Flysystem", "Laravel Flysystem", "Laravel-Flysystem", "Graham Campbell", "GrahamCampbell"],
     "license": "MIT",

@@ -1,6 +1,64 @@
 Laravel Flysystem
 =================
 
+## Note: This is a custom version based on [GrahamCampbell/Laravel-Flysystem](https://github.com/GrahamCampbell/Laravel-Flysystem)
+
+## What was added 
+
+- You can custom connector. Example when you want to connect minio/seaweedfs(s3 interface).
+
+```php
+<?php
+/**
+ * Minio Connector Class
+ * User: hocvt
+ * Date: 11/9/18
+ * Time: 16:27
+ */
+
+namespace App\Colombo\Minio;
+
+
+use GrahamCampbell\Flysystem\Adapters\AwsS3Connector;
+
+class MinioConnector extends AwsS3Connector {
+    
+    protected function getAuth( array $config ) {
+        
+        $auth = parent::getAuth( $config );
+        
+        if (array_key_exists('use_path_style_endpoint', $config)) {
+            $auth['use_path_style_endpoint'] = $config['use_path_style_endpoint'];
+        }
+        return $auth;
+    }
+    
+}
+```
+
+Connection config 
+
+```php
+'minio' => [
+        'driver'          => \App\Colombo\Minio\MinioConnector::class,
+        'key'             => '0NTTRHXQDBWE0N2Y9YEB',
+        'secret'          => 'VC7rw7X4nA1ZJgx8SOIoh6fBmQjVl0JFOnk4vkTz',
+        'bucket'          => 'local',
+        'region'          => '',
+        'version'         => 'latest',
+        'bucket_endpoint' => false,
+        'use_path_style_endpoint' => true,// this will be passed to S3Client
+        // 'calculate_md5'   => true,
+        // 'scheme'          => 'https',
+         'endpoint'        => 'http://127.0.0.1:9000',
+//       'prefix'          => '',
+        // 'visibility'      => 'public',
+        // 'pirate'          => false,
+        // 'eventable'       => true,
+        // 'cache'           => 'foo'
+    ],
+```
+
 Laravel Flysystem was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and is a [Flysystem](https://github.com/thephpleague/flysystem) bridge for [Laravel 5](http://laravel.com). It utilises my [Laravel Manager](https://github.com/GrahamCampbell/Laravel-Manager) package. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Flysystem/releases), [license](LICENSE), and [contribution guidelines](CONTRIBUTING.md).
 
 ![Laravel Flysystem](https://cloud.githubusercontent.com/assets/2829600/4432299/c12eac50-468c-11e4-93c3-5d587a2a56fa.PNG)
@@ -17,12 +75,12 @@ Laravel Flysystem was created by, and is maintained by [Graham Campbell](https:/
 
 ## Installation
 
-Laravel Flysystem requires [PHP](https://php.net) 7.1 or 7.2. This particular version supports Laravel 5.5 - 5.7 only.
+Laravel Flysystem requires [PHP](https://php.net) 7. This particular version supports Laravel 5.1, 5.2, 5.3, 5.4, or 5.5 only.
 
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require graham-campbell/flysystem
+$ composer require stupiddev/flysystem
 ```
 
 There are also some additional dependencies you will need to install for some of the features:
@@ -38,7 +96,7 @@ There are also some additional dependencies you will need to install for some of
 * The adapter caching support requires `league/flysystem-cached-adapter` (`^1.0`).
 * The eventable filesystem support requires `league/flysystem-eventable-filesystem` (`^1.0`).
 
-Once installed, if you are not using automatic package discovery, then you need to register the `GrahamCampbell\Flysystem\FlysystemServiceProvider` service provider in your `config/app.php`.
+Once installed, you need to register the `GrahamCampbell\Flysystem\FlysystemServiceProvider` service provider in your `config/app.php`, or if you're using Laravel 5.5, this can be done via the automatic package discovery.
 
 You can also optionally alias our facade:
 
